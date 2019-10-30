@@ -17,43 +17,43 @@ var Enemy = function(x, y, height, width, speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x = this.x + this.speed * dt;
-    if (this.x >= 505) {
-      this.x = this.origionalX;
+  // You should multiply any movement by the dt parameter
+  // which will ensure the game runs at the same speed for
+  // all computers.
+  this.x = this.x + this.speed * dt;
+  if (this.x >= 505) {
+    this.x = this.origionalX;
+  }
+  if (this.checkCollision()) {
+    if (player.level === 1) {
+      player.health = player.health - randomNum(5, 10);
+    } else if (player.level === 2) {
+      player.health = player.health - randomNum(11, 20);
+    } else if (player.level === 3) {
+      player.health = player.health - randomNum(21, 30);
     }
-    if (this.checkCollision()) {
-      if (player.level === 1) {
-        player.health = player.health - randomNum(5, 10);
-      } else if (player.level === 2) {
-        player.health = player.health - randomNum(11, 20);
-      } else if (player.level === 3) {
-        player.health = player.health - randomNum(21, 30);
-      }
-      updateInfo ();
-      flashMsg('Oh snap! Collision!') ;
-      player.reset();
-      if (player.health <= 0) {
-        gameReset();
-        flashMsg('Game Over!');
-      }
+    updateInfo();
+    flashMsg('Oh snap! Collision!');
+    player.reset();
+    if (player.health <= 0) {
+      gameReset();
+      flashMsg('Game Over!');
     }
+  }
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 //Collision detection
 Enemy.prototype.checkCollision = function() {
   if (player.x >= this.x - this.width &&
-  player.x <= this.x + this.width &&
-  player.y >= this.y - this.height &&
-  player.y <= this.y + this.height) {  
-    return true; 
+    player.x <= this.x + this.width &&
+    player.y >= this.y - this.height &&
+    player.y <= this.y + this.height) {
+    return true;
   } else {
     return false;
   }
@@ -76,26 +76,26 @@ var Player = function(x, y, speed) {
 
 Player.prototype.update = function() {};
 
-Player.prototype.render = function(){
+Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 Player.prototype.handleInput = function(key) {
   if (key == 'left') {
-      this.x = (this.x - this.speed) % 505;
-      if (this.x < 0) {
-        this.x = 0;
-      }
+    this.x = (this.x - this.speed) % 505;
+    if (this.x < 0) {
+      this.x = 0;
+    }
   } else if (key == 'right') {
-      this.x = (this.x + this.speed) % 505;
-      if (this.x > 500) {
-        this.x = 500;
-      }
+    this.x = (this.x + this.speed) % 505;
+    if (this.x > 500) {
+      this.x = 500;
+    }
   } else if (key == 'up') {
     this.y = (this.y - this.speed) % 606;
     if (this.y <= 20) {
       this.reset();
-      this.score ++;
+      this.score++;
       if (this.score >= 5) {
         this.levelUp();
         this.score = 0;
@@ -103,25 +103,25 @@ Player.prototype.handleInput = function(key) {
       updateInfo();
     }
   } else if (key == 'down') {
-      this.y = (this.y + this.speed) % 606;
-      if (this.y >= 450) {
-        this.y = 450;
-      }
+    this.y = (this.y + this.speed) % 606;
+    if (this.y >= 450) {
+      this.y = 450;
+    }
   }
 };
 
 Player.prototype.levelUp = function() {
-    if (this.level >= 3) {
-      flashMsg('Hurray!  You won the game.')
-      gameReset();
-    } else {
-      this.level ++;
-      this.health = 100;
-      allEnemies.forEach (function (enemy) {
-        enemy.speed = enemy.speed + randomNum(30, 60);
-      });
-      flashMsg('Level up, Woohoo!');
-    }
+  if (this.level >= 3) {
+    flashMsg('Hurray!  You won the game.')
+    gameReset();
+  } else {
+    this.level++;
+    this.health = 100;
+    allEnemies.forEach(function(enemy) {
+      enemy.speed = enemy.speed + randomNum(30, 60);
+    });
+    flashMsg('Level up, Woohoo!');
+  }
 };
 
 Player.prototype.reset = function() {
@@ -145,14 +145,14 @@ gameReset();
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
+  var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down'
+  };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
 
 function gameReset() {
@@ -166,7 +166,7 @@ function gameReset() {
   var enemyCount = randomNum(3, 7);
   for (var i = 0; i < enemyCount; i++) {
     allEnemies.push(
-    new Enemy(0, randomNum(130, 280), 40, 40, randomNum(50, 100)));
+      new Enemy(0, randomNum(130, 280), 40, 40, randomNum(50, 100)));
   }
 }
 
