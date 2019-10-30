@@ -1,0 +1,17 @@
+body {
+    text-align: center;
+}
+
+.msg-card {
+font-size: 2em;
+}
+
+.info-card {
+    position: fixed;
+  top: 80px;
+  left: 0;
+  width: 200px;
+  height: 100px;
+  border: 3px solid #73AD21;
+font-size: 2em;
+}
